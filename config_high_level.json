@@ -2,7 +2,7 @@
   "window": {
     "width": 1280,
     "height": 720,
-    "title": "Dear ImGui Demo"
+    "title": "Shapes"
   },
   "rendering": {
     "glsl_version": "#version 130",

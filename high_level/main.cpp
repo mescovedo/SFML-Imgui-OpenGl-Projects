@@ -6,6 +6,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "ShapeFactory.h"
+
 using json = nlohmann::json;
 
 int main() {
@@ -26,6 +28,16 @@ int main() {
     int fps = config["rendering"]["fps"];
     auto clear_color = config["rendering"]["clear_color"];
     std::string style = config["imgui"]["style"];
+
+    std::ifstream shapesFile(std::string(CONFIG_DIR) + "/shapes_config.json");
+    if (!shapesFile.is_open()) {
+        std::cerr << "Error opening shapes_config.json\n";
+        return -1;
+    }
+
+    shapesFile >> config;
+
+    auto shapes = ShapeFactory::loadShapes(config);
 
     // --- Create SFML window ---
     sf::RenderWindow window(sf::VideoMode(width, height), title);
@@ -69,13 +81,36 @@ int main() {
         // --- Start ImGui frame ---
         ImGui::SFML::Update(window, deltaClock.restart());
 
-        // --- Show ImGui demo window ---
-        static bool show_demo = true;
-        if (show_demo)
-            ImGui::ShowDemoWindow(&show_demo);
+        // --- Show ImGui window ---
+        ImGui::Begin("Objects");
+        size_t currentIndex = 0;
+
+        if (ImGui::BeginCombo("Select Object", shapes[currentIndex] -> name.c_str())) {
+            for (size_t i=0; i < shapes.size() ; i++) {
+                bool isSelected = (currentIndex == i);
+                if (ImGui::Selectable(shapes[i] -> name.c_str(), isSelected)) {
+                    currentIndex = i;
+                }
+                if (isSelected) {
+                    ImGui::SetItemDefaultFocus();
+                }
+            }
+            ImGui::EndCombo();
+        }
+        shapes[currentIndex] -> showImgui();
+
+        ImGui::End();
+
+        // --- Update Velocity ---
+        for (auto& s: shapes) {
+            s->update(window);
+        }
 
         // --- Render SFML + ImGui ---
         window.clear(bgColor);
+        for (auto& s : shapes) {
+            s->draw(window);
+        }
         ImGui::SFML::Render(window);
         window.display();
     }
