@@ -10,10 +10,10 @@ using json = nlohmann::json;
 
 int main() {
 
-    // --- Load config_low_level.json from project root ---
-    std::ifstream file(std::string(CONFIG_DIR) + "/config_low_level.json");
+    // --- Load config_openGl.json from project root ---
+    std::ifstream file(std::string(CONFIG_DIR) + "/config_openGl.json");
     if (!file.is_open()) {
-        std::cerr << "Error opening config_low_level.json in " << CONFIG_DIR << std::endl;
+        std::cerr << "Error opening config_openGl.json in " << CONFIG_DIR << std::endl;
         return -1;
     }
 

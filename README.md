@@ -5,12 +5,12 @@
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
 ## 🎯 Purpose
 
-This repository is a base template for small 2D projects, prototypes, and tools using Dear ImGui.
+This repository is a base template for small 2D projects, prototypes, and tools using SFML, OpenGl and Dear ImGui.
 It provides two approaches depending on the abstraction level you prefer:
 
-Low-level: GLFW + OpenGL + ImGui
+openGl: GLFW + OpenGL + ImGui
 
-High-level: SFML + ImGui-SFML + ImGui
+sfml: SFML + ImGui-SFML + ImGui
 
 Both models allow easy configuration via JSON and are ready to build on Windows with CLion (CMake).
 
@@ -24,41 +24,41 @@ Both models allow easy configuration via JSON and are ready to build on Windows 
 
 ### Included libraries:
 
-| Library       | Version | Purpose                          | Used in              |
-|---------------|---------|----------------------------------|----------------------|
-| ImGui         | 1.89.5  | Immediate GUI framework          | Both                 |
-| nlohmann/json | latest  | JSON parsing                     | Both                 |
-| GLFW          | 3.4     | Window/input management          | Low-level template   |
-| OpenGL        | system  | Rendering backend for GLFW       | Low-level template   |
-| SFML          | 2.6.2   | High-level window/graphics/audio | High-level template  |
-| ImGui-SFML    | 2.6.1   | Bridge ImGui + SFML              | High-level template  |
+| Library       | Version | Purpose                      | Used in         |
+|---------------|---------|------------------------------|-----------------|
+| ImGui         | 1.89.5  | Immediate GUI framework      | Both            |
+| nlohmann/json | latest  | JSON parsing                 | Both            |
+| GLFW          | 3.4     | Window/input management      | openGl template |
+| OpenGL        | system  | Rendering backend for GLFW   | openGl template |
+| SFML          | 2.6.2   | sfml window/graphics/audio   | sfml template   |
+| ImGui-SFML    | 2.6.1   | Bridge ImGui + SFML          | sfml template   |
 
 
 ## 🚀 Running the demo
 
-- Open the desired project folder (low-level/ or high-level/) in CLion.
+- Open the desired project folder (openGl/ or sfml/) in CLion.
 
 - Make sure config.json is in the root of the project.
 
 - Build and run:
-  - Low-level: an OpenGL window will open with the ImGui demo window.
+  - openGl: an OpenGL window will open with the ImGui demo window.
 
-  - High-level: an SFML window will open with the ImGui demo window.
+  - sfml: an SFML window will open with the ImGui demo window.
 
 - Edit config.json to change parameters like window size, background color, style, vsync.
 
 ## 📁 Folder structure
 
        imguiProjects/
-       ├─ low-level/
+       ├─ openGl/
        |   ├─ main.cpp
        |
-       ├─ high-level/
+       ├─ sfml/
        |   ├─ main.cpp
        |
        ├─ CMakeLists.txt
-       ├─ config_high_level.json
-       ├─ config_low_level.json
+       ├─ config_openGl.json
+       ├─ config_sfml.json
        |
        └─ external/
            ├─ imgui/

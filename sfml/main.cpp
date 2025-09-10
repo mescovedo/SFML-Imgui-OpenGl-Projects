@@ -9,10 +9,10 @@
 using json = nlohmann::json;
 
 int main() {
-    // --- Load config_low_level.json ---
-    std::ifstream file(std::string(CONFIG_DIR) + "/config_high_level.json");
+    // --- Load config_openGl.json ---
+    std::ifstream file(std::string(CONFIG_DIR) + "/config_sfml.json");
     if (!file.is_open()) {
-        std::cerr << "Error opening config_high_level.json\n";
+        std::cerr << "Error opening config_sfml.json\n";
         return -1;
     }
 
