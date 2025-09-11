@@ -9,6 +9,12 @@ set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/external/imgui)
 set(JSON_DIR ${CMAKE_SOURCE_DIR}/external/json)
 set(SFML_DIR ${CMAKE_SOURCE_DIR}/external/sfml)
 set(IMGUI_SFML_DIR ${CMAKE_SOURCE_DIR}/external/imgui-sfml)
+set(MINGW_BIN "${CMAKE_SOURCE_DIR}/external/mingw/bin")
+
+# --- Default build type ---
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
 
 # --- ImGui sources ---
 set(IMGUI_SRC
@@ -48,52 +54,36 @@ else()
     target_compile_options(imgui PRIVATE -w)
 endif()
 
-# --- Low-level target ---
-add_executable(low_level low_level/main.cpp)
-
-# Include directories for low_level target
-target_include_directories(low_level
-        PRIVATE
-        ${GLFW_DIR}/include
-        ${JSON_DIR}/include
-)
-
-# Compile definitions
-target_compile_definitions(low_level PRIVATE CONFIG_DIR="${CMAKE_SOURCE_DIR}")
+# --- openGl target ---
+add_executable(openGl openGl/main.cpp)
+target_include_directories(openGl PRIVATE ${GLFW_DIR}/include ${JSON_DIR}/include)
+target_compile_definitions(openGl PRIVATE CONFIG_DIR="${CMAKE_SOURCE_DIR}")
 
 # Link libraries
-target_link_libraries(low_level PRIVATE imgui ${GLFW_DIR}/lib/libglfw3.a opengl32 gdi32)
+target_link_libraries(openGl PRIVATE imgui ${GLFW_DIR}/lib/libglfw3.a opengl32 gdi32)
 
 # Enable warnings for your code only
 if (MSVC)
-    target_compile_options(low_level PRIVATE /W4 /permissive-)
+    target_compile_options(openGl PRIVATE /W4 /permissive-)
 else()
-    target_compile_options(low_level PRIVATE -Wall -Wextra -Wpedantic -Wshadow -Wconversion)
+    target_compile_options(openGl PRIVATE -Wall -Wextra -Wpedantic -Wshadow -Wconversion)
 endif()
 
-
-# --- High-level target ---
-add_executable(high_level high_level/main.cpp
-        high_level/CircleConfig.cpp
-        high_level/RectangleConfig.cpp
-        high_level/TriangleConfig.cpp
-        high_level/SquareConfig.cpp
-        high_level/shapeFactory.cpp
+# --- SFML target ---
+add_executable(sfml
+    sfml/main.cpp
+    sfml/CircleConfig.cpp
+    sfml/RectangleConfig.cpp
+    sfml/TriangleConfig.cpp
+    sfml/SquareConfig.cpp
+    sfml/shapeFactory.cpp
 )
 
-# Include directories for high_level target
-target_include_directories(high_level
-        PRIVATE
-        ${JSON_DIR}/include
-        ${SFML_DIR}/include
-        high_level
-)
-
-# Compile definitions
-target_compile_definitions(high_level PRIVATE CONFIG_DIR="${CMAKE_SOURCE_DIR}")
+target_include_directories(sfml PRIVATE ${JSON_DIR}/include ${SFML_DIR}/include sfml)
+target_compile_definitions(sfml PRIVATE CONFIG_DIR="${CMAKE_SOURCE_DIR}")
 
 # Link libraries
-target_link_libraries(high_level PRIVATE imgui
+target_link_libraries(sfml PRIVATE imgui
         ${SFML_DIR}/lib/libsfml-graphics.a
         ${SFML_DIR}/lib/libsfml-window.a
         ${SFML_DIR}/lib/libsfml-system.a
@@ -102,15 +92,67 @@ target_link_libraries(high_level PRIVATE imgui
 
 # Enable warnings for your code only
 if (MSVC)
-    target_compile_options(high_level PRIVATE /W4 /permissive-)
+    target_compile_options(sfml PRIVATE /W4 /permissive-)
 else()
-    target_compile_options(high_level PRIVATE -Wall -Wextra -Wpedantic -Wshadow -Wconversion)
+    target_compile_options(sfml PRIVATE -Wall -Wextra -Wpedantic -Wshadow -Wconversion)
 endif()
 
-# --- Copy SFML DLLs on Windows ---
+# --- Optional static MinGW runtime ---
+if(MINGW)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+endif()
+
+# --- Subsystem WINDOWS / CONSOLE depending on build type ---
 if(WIN32)
-    add_custom_command(TARGET high_level POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${SFML_DIR}/bin
-            $<TARGET_FILE_DIR:high_level>)
+    if(MINGW)
+        if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+            # Debug → console
+            target_link_options(sfml PRIVATE "")
+        else()
+            # Release → GUI only
+            target_link_options(sfml PRIVATE "-mwindows")
+        endif()
+    else()
+        # MSVC: keep the original /SUBSYSTEM flag
+        if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+            set_target_properties(sfml PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
+        else()
+            set_target_properties(sfml PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
+        endif()
+    endif()
+endif()
+
+# --- Copy SFML DLLs and MinGW runtime DLLs after build ---
+if(WIN32)
+    # Copy SFML DLLs
+    add_custom_command(TARGET sfml POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${SFML_DIR}/bin
+        $<TARGET_FILE_DIR:sfml>
+    )
+
+    # Copy MinGW runtime DLLs
+    if(MINGW)
+        set(MINGW_DLLS
+                ${MINGW_BIN}/libgcc_s_seh-1.dll
+                ${MINGW_BIN}/libstdc++-6.dll
+                ${MINGW_BIN}/libwinpthread-1.dll
+        )
+        foreach(dll ${MINGW_DLLS})
+            add_custom_command(TARGET sfml POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${dll} $<TARGET_FILE_DIR:sfml>
+            )
+        endforeach()
+    endif()
+endif()
+
+# --- Install rules (for distribution) ---
+install(TARGETS sfml
+    RUNTIME DESTINATION bin
+)
+install(DIRECTORY resources/ DESTINATION bin/resources)
+
+# Copy SFML DLLs for install
+if(WIN32)
+    install(DIRECTORY ${SFML_DIR}/bin/ DESTINATION bin FILES_MATCHING PATTERN "*.dll")
 endif()
