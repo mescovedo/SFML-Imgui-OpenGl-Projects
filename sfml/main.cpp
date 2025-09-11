@@ -83,7 +83,7 @@ int main() {
 
         // --- Show ImGui window ---
         ImGui::Begin("Objects");
-        size_t currentIndex = 0;
+        static size_t currentIndex = 0;
 
         if (ImGui::BeginCombo("Select Object", shapes[currentIndex] -> name.c_str())) {
             for (size_t i=0; i < shapes.size() ; i++) {
