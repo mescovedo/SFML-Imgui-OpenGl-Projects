@@ -4,16 +4,17 @@
 
 #include "SpawnSystem.h"
 #include "entity/Factories.h"
+#include "utils/Random.h"
 
-void SpawnSystem::spawn(EntityManager &em) {
+void SpawnSystem::spawn(EntityManager &em, sf::Vector2u& winSize) {
 
     if (timer > 150){
 
-        Factories::createEntityTriangle(em);
-        Factories::createEntityCircle(em);
-        Factories::createEntityCharacter(em);
+        Factories::createEntityTriangle(em, winSize);
+        Factories::createEntityCircle(em, winSize);
+        Factories::createEntityCharacter(em, winSize);
 
-        timer = 0;
+        timer = Random::get<>(100 , 200);
     }
     timer++;
 }

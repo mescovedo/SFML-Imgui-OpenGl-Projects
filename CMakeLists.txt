@@ -90,6 +90,7 @@ add_executable(sfml
         sfml/system/SpawnSystem.cpp
         sfml/system/SpawnSystem.h
         sfml/utils/Colors.h
+        sfml/utils/Random.h
 )
 
 target_include_directories(sfml PRIVATE ${JSON_DIR}/include ${SFML_DIR}/include sfml)

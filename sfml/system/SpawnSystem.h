@@ -5,6 +5,7 @@
 #pragma once
 
 #include "entity/EntityManager.h"
+#include "SFML/System/Vector2.hpp"
 
 class SpawnSystem {
 
@@ -14,7 +15,7 @@ private:
 
 public:
 
-    void spawn(EntityManager &em);
+    void spawn(EntityManager &em, sf::Vector2u& winSize);
     void startTimer();
 
 };

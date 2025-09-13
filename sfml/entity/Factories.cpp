@@ -7,30 +7,31 @@
 #include "component/Moviment.h"
 #include "component/Shape.h"
 #include "utils/Colors.h"
+#include "utils/Random.h"
 
-void Factories::createEntityCharacter(EntityManager& em) {
+void Factories::createEntityCharacter(EntityManager& em, sf::Vector2u& winSize) {
 
     sf::Color color = ColorsMap.at(GameColor::blue);
     sf::Vector2f velocity(5,5);
-    sf::Vector2f position(50,50);
+    sf::Vector2f position = getRandomSpawnPosition(winSize);
     createEntityShape(em, 8, color, velocity, position, 0, 0);
 
 }
 
-void Factories::createEntityCircle(EntityManager& em) {
+void Factories::createEntityCircle(EntityManager& em, sf::Vector2u& winSize) {
 
     sf::Color color = ColorsMap.at(GameColor::red);
     sf::Vector2f velocity(5,5);
-    sf::Vector2f position(5,5);
+    sf::Vector2f position = getRandomSpawnPosition(winSize);
     createEntityShape(em, 100, color, velocity, position, 1,10);
 
 }
 
-void Factories::createEntityTriangle(EntityManager& em) {
+void Factories::createEntityTriangle(EntityManager& em, sf::Vector2u& winSize) {
 
     sf::Color color = ColorsMap.at(GameColor::gray);
     sf::Vector2f velocity(5,5);
-    sf::Vector2f position(100,100);
+    sf::Vector2f position = getRandomSpawnPosition(winSize);
     createEntityShape(em, 4, color, velocity, position, 2, 10);
 
 }
@@ -47,4 +48,10 @@ void Factories::createEntityShape(EntityManager& em, int numberOfSides, sf::Colo
     em.addComponent<Rotation>(character, 0.f,rotation);
 
 
+}
+
+sf::Vector2f getRandomSpawnPosition( sf::Vector2u& winSize)  {
+    float x = Random::get<float>(10.f, winSize.x - 10.f);
+    float y = Random::get<float>(10.f, winSize.y - 10.f);
+    return {x, y};
 }

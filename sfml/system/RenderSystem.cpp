@@ -10,7 +10,7 @@
 
 void RenderSystem::update(EntityManager &em, sf::RenderWindow &window, SpawnSystem &spawnSystem) {
 
-    sf::Vector2u winSize = window.getSize();
+    static sf::Vector2u winSize = window.getSize();
 
     for(auto e: em.getEntities()){
 
@@ -35,7 +35,7 @@ void RenderSystem::update(EntityManager &em, sf::RenderWindow &window, SpawnSyst
         window.draw(shape);
     }
 
-    spawnSystem.spawn(em);
+    spawnSystem.spawn(em, winSize);
 }
 
 void RenderSystem::setPosition(sf::Vector2f& position, sf::Vector2f& velocity, sf::Vector2u& winSize, bool visible, int tag, int radius, float &angle , float &rotation ) {
