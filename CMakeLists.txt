@@ -79,6 +79,17 @@ add_executable(sfml
     sfml/component/Shape.h
         sfml/entity/Factories.cpp
         sfml/entity/Factories.h
+        sfml/system/RenderSystem.cpp
+        sfml/system/RenderSystem.h
+        sfml/system/MovementSystem.cpp
+        sfml/system/MovementSystem.h
+        sfml/system/InputSystem.cpp
+        sfml/system/InputSystem.h
+        sfml/system/CollisionSystem.cpp
+        sfml/system/CollisionSystem.h
+        sfml/system/SpawnSystem.cpp
+        sfml/system/SpawnSystem.h
+        sfml/utils/Colors.h
 )
 
 target_include_directories(sfml PRIVATE ${JSON_DIR}/include ${SFML_DIR}/include sfml)

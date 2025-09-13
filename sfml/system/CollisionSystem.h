@@ -1,0 +1,14 @@
+//
+// Created by mats_ on 12/09/2025.
+//
+
+#ifndef IMGUIPROJECTS_COLLISIONSYSTEM_H
+#define IMGUIPROJECTS_COLLISIONSYSTEM_H
+
+
+class CollisionSystem {
+
+};
+
+
+#endif //IMGUIPROJECTS_COLLISIONSYSTEM_H

@@ -4,17 +4,18 @@
 
 #pragma once
 
+#include <optional>
 #include "Entity.h"
 #include "EntityManager.h"
+#include "SFML/System/Vector2.hpp"
+#include "SFML/Graphics/Color.hpp"
 
-class Factories {
+namespace Factories {
 
-public:
-
-    Entity* createEntityCharacter(EntityManager em);
-    Entity* createEntityShape(const EntityManager em);
-    Entity* createEntityCircle(const EntityManager em);
-    Entity* createEntityTriangle(const EntityManager em);
+    void createEntityCharacter(EntityManager& em);
+    void createEntityShape(EntityManager& em, int numberOfSides, sf::Color& color, sf::Vector2f& velocity, sf::Vector2f& position, int type, float rotation);
+    void createEntityCircle(EntityManager& em);
+    void createEntityTriangle(EntityManager& em);
 
 };
 

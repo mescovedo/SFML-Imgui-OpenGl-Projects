@@ -7,13 +7,14 @@
 #include "SFML/System/Vector2.hpp"
 
 struct Velocity {
-    sf::Vector2f v;
+    sf::Vector2f value;
 };
 
 struct Position {
-    sf::Vector2f p;
+    sf::Vector2f value;
 };
 
 struct Rotation {
-    sf::Vector2f r;
+    float angle;
+    float rotation;
 };

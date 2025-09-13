@@ -6,9 +6,17 @@
 #include "SFML/Graphics/Color.hpp"
 
 struct Sides {
-    int numberOfSides;
+    int value;
 };
 
 struct Color {
-    sf::Color c;
+    sf::Color value;
+};
+
+struct Type{
+    int value;
+};
+
+struct Visible{
+    bool value = true;
 };
