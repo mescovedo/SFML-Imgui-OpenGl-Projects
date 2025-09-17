@@ -1,30 +1,27 @@
-//
-// Created by mats_ on 12/09/2025.
-//
-
 #include <optional>
+#include <cmath>
 #include "RenderSystem.h"
 #include "component/Shape.h"
 #include "component/Moviment.h"
 #include "SFML/Graphics/CircleShape.hpp"
 
-void RenderSystem::update(EntityManager &em, sf::RenderWindow &window, SpawnSystem &spawnSystem) {
+void RenderSystem::update(EntityManager &em, sf::RenderWindow &window) {
 
     static sf::Vector2u winSize = window.getSize();
 
+
+    removeInvisible(em);
+
     for(auto e: em.getEntities()){
 
+        auto& visible = em.getComponent<Visible>(e)->value;
+
+        if (!visible) continue;
+
         auto& pos = em.getComponent<Position>(e)->value;
-        auto& velo = em.getComponent<Velocity>(e)->value;
         auto& sides = em.getComponent<Sides>(e)->value;
         auto& color = em.getComponent<Color>(e)->value;
-        auto& type = em.getComponent<Type>(e)->value;
-        auto& visible = em.getComponent<Visible>(e)->value;
         auto& angle = em.getComponent<Rotation>(e)->angle;
-        auto& rotation = em.getComponent<Rotation>(e)->rotation;
-
-
-        setPosition(pos, velo, winSize,visible, type,20, angle, rotation);
 
 
         sf::CircleShape shape(20, sides);
@@ -32,30 +29,43 @@ void RenderSystem::update(EntityManager &em, sf::RenderWindow &window, SpawnSyst
         shape.setPosition(pos);
         shape.setRotation(angle);
 
+        sf::Vector2f vecRadius = sf::Vector2f(20, 20);
+
+        sf::Vector2f rotatedPos1 = pos;
+
+
+        float angleRad = angle * 3.14159265f / 180.f;
+
+
+        rotatedPos1.x += vecRadius.x * cos(angleRad);
+        rotatedPos1.y += vecRadius.y * sin(angleRad);
+
+
+        sf::CircleShape collider(20,100);
+        collider.setPosition(pos);
+        collider.setRotation(angle);
+        collider.setFillColor(sf::Color::Transparent);
+        collider.setOutlineThickness(1.f);
+        collider.setOutlineColor(sf::Color::Green);
+        window.draw(collider);
+
+
         window.draw(shape);
     }
 
-    spawnSystem.spawn(em, winSize);
 }
 
-void RenderSystem::setPosition(sf::Vector2f& position, sf::Vector2f& velocity, sf::Vector2u& winSize, bool visible, int tag, int radius, float &angle , float &rotation ) {
 
-    if (!visible) return;
+void RenderSystem::removeInvisible(EntityManager &em) {
 
-
-            position += velocity;
-
-            angle += rotation/5;
-
-
-            if (position.x  < 0 || position.x + radius*2 > static_cast<float>(winSize.x)) {
-                velocity.x *= -1;
-
-            }
-
-            if (position.y < 0 || position.y + radius*2 > static_cast<float>(winSize.y)) {
-                velocity.y *= -1;
-            }
-
+    std::vector<Entity> toRemove;
+    for (auto e : em.getEntities()) {
+        if (!em.getComponent<Visible>(e)->value) {
+            toRemove.push_back(e);
+        }
+    }
+    for (auto e : toRemove) {
+        em.destroyEntity(e);
+    }
 }
 

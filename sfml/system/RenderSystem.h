@@ -7,11 +7,13 @@
 #include "entity/EntityManager.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SpawnSystem.h"
+#include "CollisionSystem.h"
 
 class RenderSystem {
 
+private:
+    void removeInvisible(EntityManager &em);
 public:
-    void update(EntityManager& em, sf::RenderWindow& window, SpawnSystem &spawnSystem);
+    void update(EntityManager& em, sf::RenderWindow& window);
 
-    void setPosition(sf::Vector2f& position, sf::Vector2f& velocity, sf::Vector2u& winSize, bool visible, int tag, int radius, float &angle , float &rotation);
 };

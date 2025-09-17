@@ -32,6 +32,7 @@ set(IMGUI_BACKENDS_GL
 
 set(IMGUI_BACKENDS_SFML
         ${IMGUI_SFML_DIR}/imgui-SFML.cpp
+        sfml/utils/Shapes.h
 )
 
 # --- ImGui Library ---
@@ -91,6 +92,7 @@ add_executable(sfml
         sfml/system/SpawnSystem.h
         sfml/utils/Colors.h
         sfml/utils/Random.h
+        sfml/utils/Velocity.h
 )
 
 target_include_directories(sfml PRIVATE ${JSON_DIR}/include ${SFML_DIR}/include sfml)

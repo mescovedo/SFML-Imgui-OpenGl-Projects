@@ -18,3 +18,15 @@ struct Rotation {
     float angle;
     float rotation;
 };
+
+struct InputState {
+    bool up = false;
+    bool down = false;
+    bool left = false;
+    bool right = false;
+    bool mouseLeftClick = false;
+    bool mouseRightClick = false;
+};
+
+struct PlayerControl {};
+

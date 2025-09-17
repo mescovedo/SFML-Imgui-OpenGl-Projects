@@ -1,14 +1,13 @@
-//
-// Created by mats_ on 12/09/2025.
-//
 
-#ifndef IMGUIPROJECTS_INPUTSYSTEM_H
-#define IMGUIPROJECTS_INPUTSYSTEM_H
 
+#pragma once
+
+#include "entity/EntityManager.h"
+#include "SFML/Graphics/RenderWindow.hpp"
 
 class InputSystem {
+public:
+    void update(EntityManager &em, sf::RenderWindow& window);
 
 };
 
-
-#endif //IMGUIPROJECTS_INPUTSYSTEM_H

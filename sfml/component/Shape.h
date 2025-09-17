@@ -20,3 +20,7 @@ struct Type{
 struct Visible{
     bool value = true;
 };
+
+struct Radius{
+    int value;
+};

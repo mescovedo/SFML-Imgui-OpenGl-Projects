@@ -9,6 +9,9 @@
 #include "system/RenderSystem.h"
 #include "entity/Factories.h"
 #include "system/SpawnSystem.h"
+#include "system/CollisionSystem.h"
+#include "system/MovementSystem.h"
+#include "system/InputSystem.h"
 
 using json = nlohmann::json;
 
@@ -62,6 +65,9 @@ int main() {
     EntityManager em;
     RenderSystem renderSystem;
     SpawnSystem spawnSystem;
+    CollisionSystem collisionSystem;
+    InputSystem inputSystem;
+    MovementSystem movementSystem;
 
     spawnSystem.startTimer();
 
@@ -70,6 +76,9 @@ int main() {
      sf::Clock deltaClock;
      while (window.isOpen()) {
          // Event handling for SFML 2.6.x
+
+         float dt = deltaClock.restart().asSeconds();
+
          sf::Event event;
          while (window.pollEvent(event)) {
 //             ImGui::SFML::ProcessEvent(window, event);
@@ -90,8 +99,12 @@ int main() {
          // --- Render SFML + ImGui ---
          window.clear(bgColor);
 //         ImGui::SFML::Render(window);
-
-         renderSystem.update(em, window, spawnSystem);
+         sf::Vector2u winSize = window.getSize();
+         collisionSystem.collision(em);
+         inputSystem.update(em, window);
+         movementSystem.update(em,dt,winSize);
+         renderSystem.update(em, window);
+         spawnSystem.spawn(em, winSize);
          window.display();
      }
 

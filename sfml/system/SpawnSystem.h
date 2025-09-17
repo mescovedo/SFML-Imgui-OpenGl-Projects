@@ -12,6 +12,7 @@ class SpawnSystem {
 private:
 
     int timer;
+    int spawn_limit;
 
 public:
 

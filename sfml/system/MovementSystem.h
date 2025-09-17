@@ -1,14 +1,8 @@
-//
-// Created by mats_ on 12/09/2025.
-//
 
-#ifndef IMGUIPROJECTS_MOVEMENTSYSTEM_H
-#define IMGUIPROJECTS_MOVEMENTSYSTEM_H
-
+#include "entity/EntityManager.h"
+#include "SFML/System/Vector2.hpp"
 
 class MovementSystem {
-
+public:
+    void update(EntityManager &em, float dt,  sf::Vector2u winSize);
 };
-
-
-#endif //IMGUIPROJECTS_MOVEMENTSYSTEM_H
