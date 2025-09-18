@@ -1,11 +1,4 @@
-//
-// Created by mats_ on 11/09/2025.
-//
-
 #pragma once
-
-#include <optional>
-#include "Entity.h"
 #include "EntityManager.h"
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/Color.hpp"

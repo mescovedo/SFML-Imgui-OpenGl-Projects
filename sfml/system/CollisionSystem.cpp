@@ -14,13 +14,18 @@ bool CollisionSystem::checkCollision(sf::Vector2f pos1, sf::Vector2f pos2, float
     float angleRad = angle1 * 3.14159265f / 180.f;
     float angleRad2 = angle2 * 3.14159265f / 180.f;
 
-    rotatedPos1.x += vecRadius.x * cos(angleRad);
-    rotatedPos1.y += vecRadius.y * sin(angleRad);
-    rotatedPos2.x += vecRadius.x * cos(angleRad2);
-    rotatedPos2.y += vecRadius.y * sin(angleRad2);
+    // rotatedPos1.x += vecRadius.x * cos(angleRad);
+    // rotatedPos1.y += vecRadius.y * sin(angleRad);
+    // rotatedPos2.x += vecRadius.x * cos(angleRad2);
+    // rotatedPos2.y += vecRadius.y * sin(angleRad2);
 
-    float x = rotatedPos1.x - rotatedPos2.x;
-    float y = rotatedPos1.y - rotatedPos2.y;
+    rotatedPos1.x += vecRadius.x ;
+    rotatedPos1.y += vecRadius.y;
+    rotatedPos2.x += vecRadius.x;
+    rotatedPos2.y += vecRadius.y ;
+
+    float x = pos1.x - pos2.x;
+    float y = pos1.y - pos2.y;
     float distanceSquared = x*x + y*y;
     float radiumsumSquared = 40*40;
     return distanceSquared <= radiumsumSquared;

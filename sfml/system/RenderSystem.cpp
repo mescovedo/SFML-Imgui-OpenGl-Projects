@@ -27,30 +27,47 @@ void RenderSystem::update(EntityManager &em, sf::RenderWindow &window) {
         sf::CircleShape shape(20, sides);
         shape.setFillColor(color);
         shape.setPosition(pos);
+        shape.setOrigin(shape.getRadius(), shape.getRadius());
         shape.setRotation(angle);
+        window.draw(shape);
 
-        sf::Vector2f vecRadius = sf::Vector2f(20, 20);
-
-        sf::Vector2f rotatedPos1 = pos;
-
-
-        float angleRad = angle * 3.14159265f / 180.f;
-
-
-        rotatedPos1.x += vecRadius.x * cos(angleRad);
-        rotatedPos1.y += vecRadius.y * sin(angleRad);
-
-
+        // sf::Vector2f vecRadius = sf::Vector2f(20, 20);
+        //
+        // sf::Vector2f rotatedPos1 = pos;
+        //
+        //
+        // float angleRad = angle * 3.14159265f / 180.f;
+        //
+        //
+        // rotatedPos1.x += vecRadius.x * cos(angleRad);
+        // rotatedPos1.y += vecRadius.y * sin(angleRad);
+        //
+        //
         sf::CircleShape collider(20,100);
         collider.setPosition(pos);
-        collider.setRotation(angle);
         collider.setFillColor(sf::Color::Transparent);
         collider.setOutlineThickness(1.f);
         collider.setOutlineColor(sf::Color::Green);
         window.draw(collider);
 
-
-        window.draw(shape);
+        //
+        // sf::CircleShape correto(20,100);
+        // correto.setPosition(pos);
+        // correto.setRotation(angle);
+        // correto.setFillColor(sf::Color::Transparent);
+        // correto.setOutlineThickness(1.f);
+        // correto.setOutlineColor(sf::Color::Red);
+        // window.draw(correto);
+        //
+        // sf::CircleShape atual(20,100);
+        // atual.setPosition(pos);
+        // atual.setFillColor(sf::Color::Transparent);
+        // atual.setOutlineThickness(1.f);
+        // atual.setOutlineColor(sf::Color::Blue);
+        // window.draw(atual);
+        //
+        //
+        // window.draw(shape);
     }
 
 }
