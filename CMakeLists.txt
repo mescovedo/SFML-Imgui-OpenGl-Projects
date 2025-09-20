@@ -93,6 +93,10 @@ add_executable(sfml
         sfml/utils/Colors.h
         sfml/utils/Random.h
         sfml/utils/Velocity.h
+        sfml/menu/Menu.cpp
+        sfml/menu/Menu.h
+        sfml/State/GameState.h
+        sfml/system/Sound.h
 )
 
 target_include_directories(sfml PRIVATE ${JSON_DIR}/include ${SFML_DIR}/include sfml)
@@ -103,6 +107,7 @@ target_link_libraries(sfml PRIVATE imgui
         ${SFML_DIR}/lib/libsfml-graphics.a
         ${SFML_DIR}/lib/libsfml-window.a
         ${SFML_DIR}/lib/libsfml-system.a
+        ${SFML_DIR}/lib/libsfml-audio.a
         opengl32 winmm gdi32
 )
 
@@ -112,6 +117,13 @@ if (MSVC)
 else()
     target_compile_options(sfml PRIVATE -Wall -Wextra -Wpedantic -Wshadow -Wconversion)
 endif()
+
+add_custom_command(TARGET sfml POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/sfml/assets
+        $<TARGET_FILE_DIR:sfml>/assets
+)
+
 
 # --- Optional static MinGW runtime ---
 if(MINGW)

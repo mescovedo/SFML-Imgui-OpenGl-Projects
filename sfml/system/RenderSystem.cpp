@@ -43,12 +43,7 @@ void RenderSystem::update(EntityManager &em, sf::RenderWindow &window) {
         // rotatedPos1.y += vecRadius.y * sin(angleRad);
         //
         //
-        sf::CircleShape collider(20,100);
-        collider.setPosition(pos);
-        collider.setFillColor(sf::Color::Transparent);
-        collider.setOutlineThickness(1.f);
-        collider.setOutlineColor(sf::Color::Green);
-        window.draw(collider);
+
 
         //
         // sf::CircleShape correto(20,100);
